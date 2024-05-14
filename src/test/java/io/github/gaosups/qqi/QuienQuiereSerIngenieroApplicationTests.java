@@ -1,4 +1,4 @@
-package com.juego.qqi;
+package io.github.gaosups.qqi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

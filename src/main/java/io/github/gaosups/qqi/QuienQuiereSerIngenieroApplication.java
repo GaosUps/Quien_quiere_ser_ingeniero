@@ -1,6 +1,5 @@
-package com.juego.qqi;
+package io.github.gaosups.qqi;
 
-import com.juego.qqi.conexion.ConexionBd;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +8,6 @@ public class QuienQuiereSerIngenieroApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(QuienQuiereSerIngenieroApplication.class, args);
-		ConexionBd.obtenerConexion();
 	}
 
 }
