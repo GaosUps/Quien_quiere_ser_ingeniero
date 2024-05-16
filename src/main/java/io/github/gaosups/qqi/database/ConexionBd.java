@@ -1,4 +1,4 @@
-package io.github.gaosups.qqi.conexion;
+package io.github.gaosups.qqi.database;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.Nullable;
@@ -11,8 +11,9 @@ import java.sql.SQLException;
 public class ConexionBd {
 
 	//qqi nombre de mi base de datos local cambiar
-	private static final String URL = "jdbc:mysql://localhost:3306/qqsi?useSSL=false&serverTimezone" +
-                                      "=UTC";
+	private static final String URL = "jdbc:mysql://localhost:3306/qqsi?useSSL=false" +
+                                      "&serverTimezone" +
+	                                  "=UTC";
 	private static final String USER = "root";
 	private static final String PASSWORD = "";
 

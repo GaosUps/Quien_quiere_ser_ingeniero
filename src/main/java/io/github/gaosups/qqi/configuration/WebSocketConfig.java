@@ -1,4 +1,4 @@
-package io.github.gaosups.qqi.configuracion;
+package io.github.gaosups.qqi.configuration;
 
 import io.github.gaosups.qqi.service.MyWebSocketHandler;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +11,13 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
-public class WebSocketConfig implements WebSocketConfigurer {
+public class WebSocketConfig
+	implements WebSocketConfigurer {
 
-    private final MyWebSocketHandler myWebSocketHandler;
-    @Override
-    public void registerWebSocketHandlers(@NotNull WebSocketHandlerRegistry registry) {
-        registry.addHandler(myWebSocketHandler, "/index");
-    }
+	private final MyWebSocketHandler myWebSocketHandler;
+
+	@Override
+	public void registerWebSocketHandlers(@NotNull WebSocketHandlerRegistry registry) {
+		registry.addHandler(myWebSocketHandler, "/index");
+	}
 }
