@@ -38,7 +38,8 @@ Agradecemos cualquier contribución, desde correcciones de bugs, mejoras en el c
 Este proyecto está licenciado bajo la Licencia MIT - ve el archivo `LICENSE.md` para más detalles.
 
 ## Contacto
-Para más información, puedes contactar a Juan Francisco Donoso Olivo en jdonosoo@est.ups.edu.ec, Francisco Ricardo López Espinoza en flopeze@est.ups.edu.ec
+Para más información, puedes contactar a Juan Francisco Donoso Olivo en jdonosoo@est.ups.edu.ec, Francisco Ricardo López Espinoza en flopeze@est.ups.edu.ec,
+Edwin Mateo Montenegro Cañizares emontenegroc@est.ups.edu.ec .
 
 ---
 ¡Gracias por visitar nuestro proyecto y esperamos que disfrutes jugando "Quien Quiere Ser Ingeniero"!
