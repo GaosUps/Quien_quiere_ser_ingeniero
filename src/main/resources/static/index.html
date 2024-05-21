@@ -7,8 +7,12 @@
     <link rel="icon" type="image/png" href="/public/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" as="style" onload="this.rel='stylesheet'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap"
+          as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap"
+              rel="stylesheet">
+    </noscript>
     <link rel="preload" href="/css/normalize.css" as="style">
     <link rel="preload" href="/css/style.css" as="style">
     <link rel="stylesheet" href="/css/normalize.css">
@@ -20,39 +24,40 @@
     <h1 class="titulo">¿Quién quiere ser ingeniero?</h1>
 </header>
 <div class="container">
-    <input id="jugador" class="jugador" type="text" placeholder="Nombre del jugador">
+    <input id="player" class="player" type="text" placeholder="Nombre del player">
     <button class="botonImagen" onclick="comenzarJuego()">
         <span>Comenzar juego</span>
     </button>
 </div>
 <script type="text/javascript">
-    var ws;
+
     function comenzarJuego() {
-    var nombreJugador = document.getElementById('jugador').value;
-    connect(nombreJugador);
-}
+        let nombre = document.getElementById('player').value;
+        connect(nombre);
+    }
 
-function connect(nombreJugador) {
-    ws = new WebSocket('ws://localhost:8080/index');
+    function connect(nombreJugador) {
+        let ws = new WebSocket('ws://localhost:8080/index');
 
-    ws.onopen = function() {
-        console.log("Conexión exitosa con el servidor WebSocket");
-        ws.send(nombreJugador);
-        //window.location.href = 'pregunta.html';
-    };
 
-    ws.onmessage = function(event) {
-        console.log('Mensaje del servidor: ' + event.data);
-    };
+        ws.onopen = function () {
+            console.log("Conexión exitosa con el servidor WebSocket");
+            ws.send(nombreJugador);
+            //window.location.href = 'pregunta.html';
+        };
 
-    ws.onclose = function(event) {
-        console.log('Desconectado!');
-    };
+        ws.onmessage = function (event) {
+            console.log('Mensaje del servidor: ' + event.data);
+        };
 
-    ws.onerror = function(error) {
-        console.log('Error: ' + error);
-    };
-}
+        ws.onclose = function (event) {
+            console.log('Desconectado!');
+        };
+
+        ws.onerror = function (error) {
+            console.log('Error: ' + error);
+        };
+    }
 
 </script>
 </body>
