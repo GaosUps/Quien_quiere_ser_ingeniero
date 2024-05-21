@@ -1,23 +1,25 @@
 package io.github.gaosups.qqi.configuration;
 
-import io.github.gaosups.qqi.service.MyWebSocketHandler;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
-@EnableWebSocket
-@RequiredArgsConstructor
+@EnableWebSocketMessageBroker
 public class WebSocketConfig
-	implements WebSocketConfigurer {
-
-	private final MyWebSocketHandler myWebSocketHandler;
+	implements WebSocketMessageBrokerConfigurer {
 
 	@Override
-	public void registerWebSocketHandlers(@NotNull WebSocketHandlerRegistry registry) {
-		registry.addHandler(myWebSocketHandler, "/index");
+	public void registerStompEndpoints(final @NotNull StompEndpointRegistry registry) {
+		registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+	}
+
+	@Override
+	public void configureMessageBroker(final @NotNull MessageBrokerRegistry registry) {
+		registry.enableSimpleBroker("/topic", "/queue");
+		registry.setApplicationDestinationPrefixes("/app");
 	}
 }
