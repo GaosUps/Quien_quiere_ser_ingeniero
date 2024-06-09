@@ -16,19 +16,6 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * The Player class represents a player in a game. It contains information such as the unique
- * identifier, username, email, points, state, and last answer time of the player. The class also
- * provides methods for comparing players and checking for equality.
- *
- * <p>This interface is a member of the Java Collections Framework.</p>
- *
- * @author ImEcuadorian
- * @see Comparator
- * @see UUID
- * @see LocalDateTime
- * @since 0.1.0-alpha-1
- */
 @Getter
 @Setter
 @Entity
@@ -38,7 +25,7 @@ public class Player
 	implements Comparable<Player> {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JdbcTypeCode(SqlTypes.VARCHAR)
 	@Column(name = "user_id", updatable = false)
 	private final UUID uuid;
@@ -48,27 +35,12 @@ public class Player
 	@Column(name = "username", length = 60)
 	private String username;
 
-	@CreatedDate
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "create_date")
-	private LocalDateTime createDate;
-
 	@Transient
 	private byte points;
 
 	@Transient
 	private long lastAnswerTime;
 
-	/**
-	 * Creates a new Player object with the provided username, email, and password.
-	 *
-	 * @param username
-	 * 	the username of the player
-	 * @param email
-	 * 	the email of the player
-	 * @param password
-	 * 	the password of the player
-	 */
 	public Player(final String username) {
 		this.uuid = UUID.randomUUID();
 		this.username = username;
@@ -78,14 +50,6 @@ public class Player
 
 	public Player() {
 		this.uuid = UUID.randomUUID();
-	}
-
-	/**
-	 * Sets the createDate field to the current date and time before persisting the entity.
-	 */
-	@PrePersist
-	protected void prePersist() {
-		createDate = LocalDateTime.now();
 	}
 
 	@Override
@@ -104,19 +68,6 @@ public class Player
 		return Objects.hashCode(getUuid());
 	}
 
-	/**
-	 * Compares this player with the specified player for order. Players are ordered first by their
-	 * points in ascending order, and then by their usernames in ascending order. Returns a negative
-	 * integer, zero, or a positive integer as this player is less than, equal to, or greater than
-	 * the
-	 * specified player.
-	 *
-	 * @param otherPlayer
-	 * 	the player to be compared
-	 *
-	 * @return a negative integer, zero, or a positive integer as this player is less than, equal to,
-	 * 	or greater than the specified player
-	 */
 	@Override
 	public int compareTo(final @org.jetbrains.annotations.NotNull Player otherPlayer) {
 		return Comparator.comparing(Player::getPoints)

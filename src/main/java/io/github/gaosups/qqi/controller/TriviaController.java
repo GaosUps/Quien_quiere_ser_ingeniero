@@ -3,6 +3,7 @@ package io.github.gaosups.qqi.controller;
 import io.github.gaosups.qqi.model.Player;
 import io.github.gaosups.qqi.model.Room;
 import io.github.gaosups.qqi.model.dto.QuestionDTO;
+import io.github.gaosups.qqi.model.exceptions.TriviaRoomNotFoundException;
 import io.github.gaosups.qqi.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -26,13 +27,18 @@ public class TriviaController {
 	@MessageMapping("/answer")
 	public void answerQuestion(String uuid, Player player, QuestionDTO questionDTO) {
 		roomService.submitAnswer(uuid, player, questionDTO);
-		//TODO Notify the room about the new state
+		Room room = roomService.getRoomStatus(uuid);
+		messagingTemplate.convertAndSend("/topic/room/answer" + uuid, room.getStatus());
 		messagingTemplate.convertAndSend("/topic/game/answer", player);
 	}
 
 	@MessageMapping("/joinRoom")
 	public void joinRoom(String uuid, Player player) {
-		roomService.addPlayerToRoom(uuid, player);
-		messagingTemplate.convertAndSend("/topic/room/join" + uuid, roomService.getRoomStatus(uuid));
+		try {
+			roomService.addPlayerToRoom(uuid, player);
+			messagingTemplate.convertAndSend("/topic/room/join" + uuid, roomService.getRoomStatus(uuid));
+		} catch (TriviaRoomNotFoundException e) {
+			//TODO Notify the user that the room does not exist
+		}
 	}
 }

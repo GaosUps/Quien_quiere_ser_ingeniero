@@ -3,6 +3,7 @@ package io.github.gaosups.qqi.service.implementation;
 import io.github.gaosups.qqi.model.Player;
 import io.github.gaosups.qqi.model.Question;
 import io.github.gaosups.qqi.model.Room;
+import io.github.gaosups.qqi.model.RoomStatus;
 import io.github.gaosups.qqi.model.dto.QuestionDTO;
 import io.github.gaosups.qqi.model.exceptions.TriviaRoomNotFoundException;
 import io.github.gaosups.qqi.repository.QuestionRepository;
@@ -44,8 +45,19 @@ public class RoomServiceImpl
 
 		Room room1 = room.get();
 
+		if(room1.checkSize()){
+			throw new TriviaRoomNotFoundException(messageSource.getMessage(
+				"NotFound.trivia.room.message",
+				new String[] { uuid },
+				Locale.US));
+		}
+
 		List<Question> questions = questionRepository.findRandomQuestions();
 		room1.setQuestions(questions);
+
+
+		room1.setStatus(RoomStatus.STARTING);
+		room1.setCurrentQuestionIndex(0);
 		roomRepository.save(room1);
 
 		return room1;
@@ -53,18 +65,53 @@ public class RoomServiceImpl
 
 	@Override
 	public void submitAnswer(final String uuid, final Player player, final QuestionDTO answer) {
+		Optional<Room> room = getTriviaRoomById(UUID.fromString(uuid));
+		Room room1 = room.orElseThrow(
+			() -> new TriviaRoomNotFoundException(messageSource.getMessage(
+				"NotFound.trivia.room.message",
+				new String[] { uuid },
+				Locale.US)));
+
+		Question question = room1.getCurrentQuestion();
+		if (question.getCorrectAnswerIndex() == answer.getAnswer().indexOf(answer.getAnswer())) {
+			player.setPoints((byte) (player.getPoints() + 1));
+		}
+
+		room1.setCurrentQuestionIndex(room1.getCurrentQuestionIndex() + 1);
+		if (room1.getCurrentQuestionIndex() == room1.getQuestions().size()) {
+			room1.setStatus(RoomStatus.FINISH);
+		}
+		roomRepository.save(room1);
 	}
 
 	@Override
 	public void addPlayerToRoom(final String uuid, final Player player) {
+		Optional<Room> optionalRoom = getTriviaRoomById(UUID.fromString(uuid));
+		Room room = optionalRoom.orElseThrow(
+			() -> new TriviaRoomNotFoundException(messageSource.getMessage(
+				"NotFound.trivia.room.message",
+				new String[] { uuid },
+				Locale.US)));
 
+		if (room.isFull()) {
+			throw new TriviaRoomNotFoundException(messageSource.getMessage(
+				"NotFound.trivia.room.message",
+				new String[] { uuid },
+				Locale.US));
+		}
 
-
+		room.getPlayers().add(player);
+		roomRepository.save(room);
 	}
 
 	@Override
 	public Room getRoomStatus(final String uuid) {
-		return null;
+		return getTriviaRoomById(UUID.fromString(uuid))
+			.orElseThrow(
+				() -> new TriviaRoomNotFoundException(messageSource.getMessage(
+					"NotFound.trivia.room.message",
+					new String[] { uuid },
+					Locale.US)));
 	}
 
 }

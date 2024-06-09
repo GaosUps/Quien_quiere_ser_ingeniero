@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Room {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JdbcTypeCode(SqlTypes.VARCHAR)
 	@Column(name = "trivia_id", updatable = false)
 	private UUID id;
@@ -47,6 +47,10 @@ public class Room {
 
 	public boolean isFull() {
 		return players.size() >= 2;
+	}
+
+	public boolean checkSize() {
+		return players.size() < 2;
 	}
 	@Override
 	public boolean equals(final Object o) {
