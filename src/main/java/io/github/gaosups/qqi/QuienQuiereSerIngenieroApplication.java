@@ -3,7 +3,6 @@ package io.github.gaosups.qqi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
 /**
  * The main entry point for the QuienQuiereSerIngeniero application.
  *
@@ -28,5 +27,5 @@ public class QuienQuiereSerIngenieroApplication {
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(QuienQuiereSerIngenieroApplication.class, args);
-	}
+ 	}
 }

@@ -48,22 +48,10 @@ public class Player
 	@Column(name = "username", length = 60)
 	private String username;
 
-	@NotBlank(message = "{NotBlank.player.email}")
-	@NotNull(message = "{NotNull.player.email}")
-	@Email(message = "{Email.player.email}")
-	@Column(unique = true, length = 60)
-	private String email;
-
 	@CreatedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
-
-	@NotBlank(message = "{NotBlank.player.password}")
-	@NotNull(message = "{NotNull.player.password}")
-	private String password;
-
-	private boolean state;
 
 	@Transient
 	private byte points;
@@ -81,11 +69,9 @@ public class Player
 	 * @param password
 	 * 	the password of the player
 	 */
-	public Player(final String username, final String email, final String password) {
+	public Player(final String username) {
 		this.uuid = UUID.randomUUID();
 		this.username = username;
-		this.email = email;
-		this.password = password;
 		this.points = 0;
 		this.lastAnswerTime = 0;
 	}
@@ -100,7 +86,6 @@ public class Player
 	@PrePersist
 	protected void prePersist() {
 		createDate = LocalDateTime.now();
-		state = true;
 	}
 
 	@Override
@@ -137,5 +122,9 @@ public class Player
 		return Comparator.comparing(Player::getPoints)
 			       .thenComparing(Player::getUsername)
 			       .compare(this, otherPlayer);
+	}
+
+	public void incrementPoints() {
+		this.points++;
 	}
 }
