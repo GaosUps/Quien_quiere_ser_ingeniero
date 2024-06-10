@@ -1,8 +1,6 @@
 package io.github.gaosups.qqi.service.implementation;
 
 import io.github.gaosups.qqi.model.Player;
-import io.github.gaosups.qqi.model.dto.PlayerDTO;
-import io.github.gaosups.qqi.model.dto.mapper.PlayerDTOMapper;
 import io.github.gaosups.qqi.model.exceptions.PlayerNotFoundException;
 import io.github.gaosups.qqi.repository.PlayerRepository;
 import io.github.gaosups.qqi.service.PlayerService;
@@ -24,26 +22,22 @@ public class PlayerServiceImpl
 	implements PlayerService {
 
 	private final PlayerRepository playerRepository;
-	private final MessageSource messageSource;
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<PlayerDTO> findAll() {
+	public List<Player> findAll() {
 		Stream<Player> users =
 			StreamSupport.stream(playerRepository.findAll()
 				                     .spliterator(), false);
 
-		return users.map(PlayerDTOMapper.createMapper()::withPlayer)
-			       .map(PlayerDTOMapper::build)
-			       .toList();
+		return users.toList();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<PlayerDTO> findById(final UUID id) {
-		return playerRepository.findById(id)
-			       .map(PlayerDTOMapper.createMapper()::withPlayer)
-			       .map(PlayerDTOMapper::build);
+	public Optional<Player> findById(final UUID id) {
+		return playerRepository.findById(id);
+
 	}
 	@Override
 	@Transactional
@@ -59,10 +53,7 @@ public class PlayerServiceImpl
 				player1 -> player.setUsername(player1.getUsername()),
 				() -> {
 					throw new PlayerNotFoundException(
-						messageSource.getMessage(
-							"user.message.notfound",
-							new String[] { id.toString() },
-							Locale.US)
+						"El jugador con el id " + id + " no se ha encontrado."
 					);
 				}
 			);

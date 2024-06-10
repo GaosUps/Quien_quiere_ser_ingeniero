@@ -2,7 +2,6 @@ package io.github.gaosups.qqi.controller;
 
 import io.github.gaosups.qqi.model.Player;
 import io.github.gaosups.qqi.model.Room;
-import io.github.gaosups.qqi.model.dto.QuestionDTO;
 import io.github.gaosups.qqi.model.exceptions.TriviaRoomNotFoundException;
 import io.github.gaosups.qqi.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +24,8 @@ public class TriviaController {
 	}
 
 	@MessageMapping("/answer")
-	public void answerQuestion(String uuid, Player player, QuestionDTO questionDTO) {
-		roomService.submitAnswer(uuid, player, questionDTO);
-		Room room = roomService.getRoomStatus(uuid);
-		messagingTemplate.convertAndSend("/topic/room/answer" + uuid, room.getStatus());
+	public void answerQuestion(String uuid, Player player) {
+		messagingTemplate.convertAndSend("/topic/room/answer" + uuid, roomService.getRoomStatus(uuid));
 		messagingTemplate.convertAndSend("/topic/game/answer", player);
 	}
 

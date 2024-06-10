@@ -1,13 +1,11 @@
 package io.github.gaosups.qqi.controller;
 
 import io.github.gaosups.qqi.model.Player;
-import io.github.gaosups.qqi.model.dto.PlayerDTO;
 import io.github.gaosups.qqi.model.exceptions.PlayerNotFoundException;
 import io.github.gaosups.qqi.service.PlayerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,31 +20,27 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/players")
+@RequestMapping("api/players")
 public class PlayerController {
 
 	private final PlayerService playerService;
-	private final MessageSource messageSource;
 
 	@GetMapping
-	public ResponseEntity<Map<String, List<PlayerDTO>>> getPlayers() {
+	public ResponseEntity<Map<String, List<Player>>> getPlayers() {
 
 		return ResponseEntity.status(HttpStatus.OK)
 			       .body(Map.of("players", playerService.findAll()));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PlayerDTO> getPlayerById(
+	public ResponseEntity<Player> getPlayerById(
 		@PathVariable UUID id
 	) {
-		PlayerDTO playerDTO =
+		Player playerDTO =
 			playerService.findById(id)
 				.orElseThrow(
 					() -> new PlayerNotFoundException(
-						messageSource.getMessage(
-							"NotFound.player.message",
-							new String[] { id.toString() },
-							Locale.US)
+						"El jugador con el id " + id + " no se ha encontrado."
 					));
 
 		return ResponseEntity.status(HttpStatus.OK)
@@ -56,7 +49,6 @@ public class PlayerController {
 
 	@PostMapping
 	public ResponseEntity<Object> createPlayer(
-
 		@Valid @RequestBody Player player,
 		BindingResult result
 	) {

@@ -1,7 +1,6 @@
 package io.github.gaosups.qqi.service;
 
 import io.github.gaosups.qqi.model.Player;
-import io.github.gaosups.qqi.model.dto.PlayerDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +8,9 @@ import java.util.UUID;
 
 public interface PlayerService {
 
-	List<PlayerDTO> findAll();
+	List<Player> findAll();
 
-	Optional<PlayerDTO> findById(UUID id);
+	Optional<Player> findById(UUID id);
 
 	Player save(Player player);
 

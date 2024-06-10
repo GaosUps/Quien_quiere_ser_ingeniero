@@ -6,11 +6,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public interface QuestionRepository
-	extends CrudRepository<Question, UUID> {
-	@Query("SELECT q FROM Question q order by RANDOM()")
-	List<Question> findRandomQuestions();
+	extends CrudRepository<Question, Long> {
+	@Query("SELECT q FROM Question q WHERE q.categoryId.name = :categoryName")
+	List<Question> findByCategoryName(String categoryName);
+
+	@Query("SELECT q FROM Question q ORDER BY RAND() limit 10")
+	List<Question> findQuestionsRandom();
+
+	List<Question> findQuestionByDifficulty(int difficulty);
 }

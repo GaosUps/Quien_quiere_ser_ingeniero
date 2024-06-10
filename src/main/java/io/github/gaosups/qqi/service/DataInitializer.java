@@ -14,10 +14,5 @@ public class DataInitializer implements CommandLineRunner {
 
 		@Override
 		public void run(String... args) {
-			Room room = new Room();
-			roomRepository.save(room);
-			Room room2 = new Room();
-			roomRepository.save(room2);
-
 		}
 }

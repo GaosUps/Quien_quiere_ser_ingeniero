@@ -27,7 +27,7 @@ public class Player
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JdbcTypeCode(SqlTypes.VARCHAR)
-	@Column(name = "user_id", updatable = false)
+	@Column(name = "id", updatable = false)
 	private final UUID uuid;
 
 	@NotBlank(message = "{NotBlank.player.fullName}")
